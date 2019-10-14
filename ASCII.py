@@ -29,7 +29,7 @@ def convertToASCII(file,cols,scale,gray_scale_depth=False,save=False):
         print("DIMENSIONS TOO SMALL\n Try changing the scale")
         exit(0)
 
-    ascii_img=''
+    ascii_string=''
 
     for j in range(rows):
         y1=int(j*tile_height)
@@ -37,7 +37,7 @@ def convertToASCII(file,cols,scale,gray_scale_depth=False,save=False):
 
         if(j==rows-1):
             y2=h
-        # ascii_img.append('')
+        # ascii_string.append('')
 
         for i in range(cols):
             x1=int(i*tile_width)
@@ -52,13 +52,13 @@ def convertToASCII(file,cols,scale,gray_scale_depth=False,save=False):
                 gray_val=gray_ramp1[int((avg*69)/255)]
             else:
                 gray_val=gray_ramp2[int(avg*9/255)]
-            ascii_img+=(gray_val)
-        ascii_img+=('\n')
-    return(ascii_img)
+            ascii_string+=(gray_val)
+        ascii_string+=('\n')
+    return(ascii_string)
 
 
 if( __name__=='__main__'):
-    desc="Convert your iamge to ASCII art"
+    desc="Convert your iamge to ASCII art :3"
     parser=argparse.ArgumentParser(description=desc)
 
     parser.add_argument('--file',dest='Img',required=True)
