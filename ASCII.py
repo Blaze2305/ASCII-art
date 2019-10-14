@@ -46,13 +46,15 @@ def convertToASCII(file,cols,scale,gray_scale_depth=False,save=False):
             if(i==cols-1):
                 x2=w
             img=image[y1:y2,x1:x2]
-            avg=int(np.average(img))
-
-            if(not gray_scale_depth):
-                gray_val=gray_ramp1[int((avg*69)/255)]
+            if(img.size !=0):  # needed to check if slice is empty or not as empty slice will return NaN average
+                avg=int(np.average(img))
+                if(not gray_scale_depth):
+                    gray_val=gray_ramp1[int((avg*69)/255)]
+                else:
+                    gray_val=gray_ramp2[int(avg*9/255)]
+                ascii_string+=(gray_val)
             else:
-                gray_val=gray_ramp2[int(avg*9/255)]
-            ascii_string+=(gray_val)
+                ascii_string+=''
         ascii_string+=('\n')
     return(ascii_string)
 
