@@ -15,19 +15,19 @@ gray_ramp2 = "@%#*+=-:. "
 # Assemble rows of ASCII character strings and print them to a file to form the final image.
 
 
-def convertToASCII(file,cols=50,scale=0.43,gray_scale_depth=0):
+def convertToASCII(file,cols,scale,gray_scale_depth=False,save=False):
     image=cv2.imread(file,0)
     w,h=image.shape
 
     tile_width=w/cols
     tile_height=tile_width/scale
-    rows=h//tile_height
+    rows=int(h/tile_height)
 
     if(cols>w  or rows>h):
         print("DIMENSIONS TOO SMALL\n Try changing the scale")
         exit(0)
 
-    ascii_img=[]
+    ascii_img=''
 
     for j in range(rows):
         y1=int(j*tile_height)
@@ -35,7 +35,7 @@ def convertToASCII(file,cols=50,scale=0.43,gray_scale_depth=0):
 
         if(j==rows-1):
             y2=h
-        ascii_img.append('')
+        # ascii_img.append('')
 
         for i in range(cols):
             x1=int(i*tile_width)
@@ -46,10 +46,54 @@ def convertToASCII(file,cols=50,scale=0.43,gray_scale_depth=0):
             img=image[y1:y2,x1:x2]
             avg=int(np.average(img))
 
-            if(not gray_scale_depth):
-                gray_val=gray_ramp1[int(avg*69/255)]
+            if( gray_scale_depth):
+                gray_val=gray_ramp1[int((avg*69)/255)]
             else:
                 gray_val=gray_ramp2[int(avg*9/255)]
-            ascii_img.append(gray_val)
-        ascii_img.append('\n')
+            ascii_img+=(gray_val)
+        ascii_img+=('\n')
     return(ascii_img)
+
+
+if( __name__=='__main__'):
+    desc="Convert your iamge to ASCII art"
+    parser=argparse.ArgumentParser(description=desc)
+
+    parser.add_argument('--file',dest='Img',required=True)
+    parser.add_argument('--scale',dest='scale',required=False)
+    parser.add_argument('--out',dest='out',required=False)
+    parser.add_argument('--cols',dest='cols',required=False)
+    parser.add_argument('--moreGray',dest='grayness',action='store_true',required=False)
+
+    args=parser.parse_args()
+
+    imageFile=args.Img
+
+    if(args.scale):
+        scale=float(args.scale)
+    else:
+        scale=0.43
+
+    if(args.cols):
+        col=int(args.cols)
+    else:
+        col=50
+
+    if(args.out):
+        out=True
+    else:
+        out=False
+
+    #Actual conversion to ASCII
+    ascii_string=convertToASCII(imageFile,col,scale,args.grayness,out);
+
+    #print to screen
+    if(not out):
+        print(ascii_string)
+        exit(0)
+    else:
+    # Write to file
+        f=open(args.out + '.txt','r+')
+        f.write(ascii_string)
+        f.close
+    
