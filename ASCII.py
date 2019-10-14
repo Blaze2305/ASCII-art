@@ -5,7 +5,9 @@ import argparse
 
 # gray scale ramp obtained from :
 # http://paulbourke.net/dataformats/asciiart/ 
-gray_ramp1 = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~i!lI;:,\"^`'. "
+
+# scale goes from Dark ---- > Bright
+gray_ramp1 = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1\{\}[]?-_+~i!lI;:,\"^`'. "
 gray_ramp2 = "@%#*+=-:. "
 
 # Convert the input image to grayscale.
@@ -46,7 +48,7 @@ def convertToASCII(file,cols,scale,gray_scale_depth=False,save=False):
             img=image[y1:y2,x1:x2]
             avg=int(np.average(img))
 
-            if( gray_scale_depth):
+            if(not gray_scale_depth):
                 gray_val=gray_ramp1[int((avg*69)/255)]
             else:
                 gray_val=gray_ramp2[int(avg*9/255)]
