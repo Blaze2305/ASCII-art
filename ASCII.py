@@ -79,7 +79,7 @@ if( __name__=='__main__'):
     if(args.cols):
         col=int(args.cols)
     else:
-        col=50
+        col=100
 
     if(args.out):
         out=True
@@ -95,7 +95,8 @@ if( __name__=='__main__'):
         exit(0)
     else:
     # Write to file
-        f=open(args.out + '.txt','r+')
+        f=open(args.out+'.txt','w+')
         f.write(ascii_string)
         f.close
+        print("Written to file {0}".format(args.out+'.txt'))
     
